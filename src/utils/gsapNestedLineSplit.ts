@@ -1,0 +1,34 @@
+import { SplitText } from 'gsap/SplitText';
+gsap.registerPlugin(SplitText);
+
+function nestedLinesSplit(target: string | HTMLElement, vars: any) {
+  target = gsap.utils.toArray(target);
+  if (target.length > 1) {
+    const splits = target.map((t) => nestedLinesSplit(t, vars)),
+      result = splits[0],
+      resultRevert = result.revert;
+    result.lines = splits.reduce((acc, cur) => acc.concat(cur.lines), []);
+    result.revert = () => splits.forEach((s) => (s === result ? resultRevert() : s.revert()));
+    return result;
+  }
+  target = target[0];
+  const contents = target.innerHTML;
+  gsap.utils.toArray(target.children).forEach((child) => {
+    const split = new SplitText(child, { type: 'lines' });
+    split.lines.forEach((line) => {
+      const clone = child.cloneNode(false);
+      clone.innerHTML = line.innerHTML;
+      target.insertBefore(clone, child);
+    });
+    target.removeChild(child);
+  });
+  const split = new SplitText(target, vars),
+    originalRevert = split.revert;
+  split.revert = () => {
+    originalRevert.call(split);
+    target.innerHTML = contents;
+  };
+  return split;
+}
+
+export { nestedLinesSplit };

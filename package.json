@@ -1,0 +1,69 @@
+{
+  "name": "@granite-marketing/mirador-hotel-webflow",
+  "version": "0.0.0",
+  "description": "Mirador Hotel — Webflow build for Studio Circa. Bootstrapped from webflow-mcp-starter; animations lifted from editoria.",
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "npx playwright test",
+    "test:capture": "npx playwright test --grep 'capture'",
+    "test:regression": "npx playwright test --grep 'regression'",
+    "test:update-baseline": "npx playwright test --update-snapshots",
+    "setup": "npx playwright install chromium",
+    "build": "cross-env NODE_ENV=production node ./bin/build.js",
+    "dev": "cross-env NODE_ENV=development node ./bin/build.js --watch",
+    "watch": "cross-env NODE_ENV=development node ./bin/build.js --watch",
+    "check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "release": "changeset publish",
+    "export-assets": "node scripts/api/figma/export-assets.js",
+    "upload-assets": "node scripts/api/webflow/upload-assets.cjs",
+    "update-metadata": "node scripts/api/webflow/update-metadata.cjs",
+    "update-seo": "node scripts/api/webflow/update-seo.cjs",
+    "parse-copy": "node scripts/api/webflow/parse-copy.cjs"
+  },
+  "keywords": [
+    "webflow",
+    "figma",
+    "mcp",
+    "claude-code",
+    "studio-circa",
+    "mirador-hotel"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Granite-Marketing/mirador-hotel-webflow.git"
+  },
+  "homepage": "https://github.com/Granite-Marketing/mirador-hotel-webflow",
+  "bugs": {
+    "url": "https://github.com/Granite-Marketing/mirador-hotel-webflow/issues"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@finsweet/ts-utils": "^0.40.0",
+    "embla-carousel": "^8.5.2",
+    "embla-carousel-auto-scroll": "^8.5.2",
+    "gsap": "^3.15.0",
+    "lenis": "^1.0.45",
+    "mammoth": "^1.8.0",
+    "split-type": "^0.3.4",
+    "splitting": "^1.1.0",
+    "swiper": "^12.2.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@changesets/changelog-git": "^0.2.1",
+    "@changesets/cli": "^2.31.0",
+    "@playwright/test": "^1.58.2",
+    "cross-env": "^10.1.0",
+    "esbuild": "^0.27.4",
+    "http-server": "^14.1.1",
+    "sharp": "^0.34.5",
+    "typescript": "^5.9.3"
+  }
+}
