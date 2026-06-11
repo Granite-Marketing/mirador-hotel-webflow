@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1
+
+### Patch Changes
+
+- Re-cut v0.1.0 as v0.1.1 to escape jsDelivr's negative cache. The v0.1.0 tag was pushed while the repo was still private; jsDelivr indexed it before the repo went public and poisoned the per-tag cache, leaving `@v0.1.0` permanently 404 on the CDN edge even though the SHA-pinned URL works. No code changes — `dist/index.js` is byte-for-byte identical to v0.1.0.
+
 ## 0.1.0
 
 ### Minor Changes
