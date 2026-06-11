@@ -1,7 +1,7 @@
 /**
  * Global CDN type declarations.
  *
- * GSAP, ScrollTrigger, Lenis, SplitText, and Swiper are loaded via CDN in
+ * GSAP, ScrollTrigger, ScrollSmoother, SplitText, and Swiper are loaded via CDN in
  * Webflow's Site Settings footer and are therefore ambient globals by the
  * time this bundle's `Webflow.push` callback runs. These declarations keep
  * the modules typed without requiring npm installs.
@@ -113,26 +113,6 @@ interface ScrollTriggerStatic {
 
 declare const gsap: GsapInstance;
 declare const ScrollTrigger: ScrollTriggerStatic;
-
-// -- Lenis (default smooth-scroll; loaded via CDN) --
-
-interface LenisInstance {
-  on: (event: string, callback: () => void) => void;
-  raf: (time: number) => void;
-  resize: () => void;
-  stop: () => void;
-  start: () => void;
-  scroll: number;
-  targetScroll: number;
-  velocity: number;
-  isScrolling: boolean;
-}
-
-interface LenisConstructor {
-  new (options: Record<string, unknown>): LenisInstance;
-}
-
-declare const Lenis: LenisConstructor;
 
 // -- ScrollSmoother (GSAP) --
 

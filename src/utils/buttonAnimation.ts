@@ -1,6 +1,3 @@
-import { gsap } from 'gsap';
-import SplitText from 'gsap/src/SplitText';
-
 gsap.registerPlugin(SplitText);
 export const buttonAnimation = () => {
   const buttons = document.querySelectorAll('.button');

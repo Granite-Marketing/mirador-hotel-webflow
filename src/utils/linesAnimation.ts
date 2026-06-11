@@ -1,6 +1,3 @@
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/all';
-
 const lineSetup = (
   line: HTMLElement,
   scrub: boolean,

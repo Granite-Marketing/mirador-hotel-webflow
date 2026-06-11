@@ -1,5 +1,3 @@
-import { gsap } from 'gsap';
-
 export const roomsHeroAnimation = () => {
   const heroTitle = document.querySelector('.sticky-hero_header');
   const heroSubtitle = document.querySelector('.sticky-hero_paragraph');

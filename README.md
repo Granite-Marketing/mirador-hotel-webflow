@@ -2,7 +2,7 @@
 
 Studio Circa hotel project, Editoria-derived. Bootstrapped from [`webflow-mcp-starter`](https://github.com/Granite-Marketing/webflow-mcp-starter) at `v1.0.0` with all of Editoria's animation modules layered on top of the MCP framework.
 
-The page smooth-scroll defaults to Lenis (template default). Editoria's `gsapSmoothScroll.ts` ships in `src/utils/` as an alternate but is not currently wired into `src/index.ts`.
+The page smooth-scroll is GSAP ScrollSmoother (matching Editoria), wired in `src/index.ts` via `gsapSmoothScroll()`.
 
 The sections below were inherited from the starter template — adapt them for Mirador's specifics as you build.
 
@@ -12,7 +12,7 @@ The sections below were inherited from the starter template — adapt them for M
 - **Figma + Webflow REST API scripts** under `scripts/api/` — asset export, asset upload, asset metadata, SEO updates, copy parsing
 - **Docs library** under `docs/reference/` — Client-First class naming, breakpoints, modal pattern, swiper pattern, scroll-pin, Finsweet CMS filter, style guide tokens, Webflow ID lookup, plus a curated `docs/solutions/` of cross-project gotchas
 - **TypeScript + esbuild bundle pipeline** — single `src/index.ts` entry, esbuild bundle into `dist/index.js`, served via jsDelivr by git tag
-- **Baseline animation modules** under `src/utils/` — Lenis smooth-scroll, accessible modals, Swiper sliders, accordion, GSAP scroll-reveal
+- **Baseline animation modules** under `src/utils/` — GSAP ScrollSmoother smooth-scroll, accessible modals, Swiper sliders, accordion, GSAP scroll-reveal
 - **Playwright visual regression** scaffold for `build-component`'s capture-and-compare loop
 - **Changesets** versioning + release workflow
 

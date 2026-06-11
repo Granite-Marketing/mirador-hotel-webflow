@@ -1,7 +1,5 @@
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/all';
-import SplitType from 'split-type';
-
+// gsap, ScrollTrigger, SplitType — loaded via CDN, typed as ambient globals
+// in src/types/gsap.d.ts. No npm imports.
 gsap.registerPlugin(ScrollTrigger);
 
 export const textMask = () => {

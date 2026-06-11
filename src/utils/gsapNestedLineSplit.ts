@@ -1,4 +1,3 @@
-import { SplitText } from 'gsap/SplitText';
 gsap.registerPlugin(SplitText);
 
 function nestedLinesSplit(target: string | HTMLElement, vars: any) {

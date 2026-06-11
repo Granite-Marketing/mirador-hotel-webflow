@@ -9,7 +9,15 @@ const WATCH = process.argv.includes('--watch')
 const BUILD_DIRECTORY = 'dist'
 
 // Config entrypoint files
-const ENTRY_POINTS = ['src/index.ts']
+//
+// Two entries, two outputs:
+//   src/index.ts                  → dist/index.js          (Webflow footer script)
+//   src/utils/bookingEngine.css   → dist/bookingEngine.css (Webflow page <link>)
+//
+// `entryNames: '[name]'` flattens the output so the CDN URL is
+//   https://cdn.jsdelivr.net/.../dist/bookingEngine.css
+// instead of inheriting the nested `utils/` segment from the source path.
+const ENTRY_POINTS = ['src/index.ts', 'src/utils/bookingEngine.css']
 
 // Config dev serving
 const SERVE_PORT = 3000
@@ -20,6 +28,7 @@ const context = await esbuild.context({
   bundle: true,
   entryPoints: ENTRY_POINTS,
   outdir: BUILD_DIRECTORY,
+  entryNames: '[name]',
   minify: PRODUCTION,
   sourcemap: !PRODUCTION,
   target: PRODUCTION ? 'es2020' : 'esnext',
@@ -30,7 +39,7 @@ const context = await esbuild.context({
 if (PRODUCTION || !WATCH) {
   await context.rebuild()
   await context.dispose()
-  console.log(`Built ${ENTRY_POINTS.join(', ')} → ${BUILD_DIRECTORY}/index.js`)
+  console.log(`Built ${ENTRY_POINTS.join(', ')} → ${BUILD_DIRECTORY}/`)
 } else {
   // Watch and serve files in dev
   await context.watch()

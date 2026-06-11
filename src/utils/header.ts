@@ -1,4 +1,3 @@
-import { gsap } from 'gsap';
 export const header = () => {
   const navBtn = document.querySelector('.nav_menu-button');
 

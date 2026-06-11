@@ -1,8 +1,6 @@
-import Swiper from 'swiper';
-import { Autoplay, Pagination } from 'swiper/modules';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
+// Swiper, gsap, ScrollTrigger — CDN-loaded ambient globals. Swiper's CDN
+// bundle ships Autoplay + Pagination already registered, so no `modules:`
+// array is needed at the call site.
 gsap.registerPlugin(ScrollTrigger);
 
 const isMobile = window.matchMedia('(max-width: 767px)');
@@ -75,7 +73,6 @@ const stickyHeroSwiper = () => {
   const pagination = block.querySelector('.sticky-hero_pagination.is-mob');
 
   const swiper = new Swiper(slider, {
-    modules: [Autoplay, Pagination],
     loop: true,
     autoplay: true,
     grabCursor: true,

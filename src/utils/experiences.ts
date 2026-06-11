@@ -1,6 +1,5 @@
-import Swiper from 'swiper';
-import { Autoplay, Pagination } from 'swiper/modules';
-
+// Swiper is a CDN-loaded ambient global (see src/types/gsap.d.ts). The CDN
+// bundle ships Autoplay + Pagination already registered.
 const isMobile = window.matchMedia('(max-width: 767px)');
 const swiperArr = [];
 const experienceItems = document.querySelectorAll('.experiences_item-gallery');
@@ -90,7 +89,6 @@ const experienceSwiper = () => {
     });
 
     const swiper = new Swiper(slider, {
-      modules: [Autoplay, Pagination],
       loop: true,
       autoplay: true,
       grabCursor: true,

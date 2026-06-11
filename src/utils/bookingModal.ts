@@ -1,5 +1,3 @@
-import { gsap } from "gsap";
-
 export const bookingModal = () => {    
     const modal = document.querySelector<HTMLElement>(".hero_booking-engine-wrapper");
     

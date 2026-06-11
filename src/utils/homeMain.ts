@@ -1,8 +1,4 @@
-import { gsap } from 'gsap';
-import SplitType from 'split-type';
-// import Splitting from 'splitting';
-// This an attempt to split the text but it doesn't work
-// import { nestedLineSplit } from './gsapNestedLineSplit';
+// gsap and SplitType are CDN-loaded ambient globals (see src/types/gsap.d.ts).
 
 // gsap.registerPlugin(SplitType);
 

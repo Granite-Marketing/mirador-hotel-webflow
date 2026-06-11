@@ -1,13 +1,13 @@
 # Mirador Hotel — CLAUDE Conventions
 
-Studio Circa hotel project. Bootstrapped from `webflow-mcp-starter@1.0.0` and seeded with all of Editoria's animation modules. The page smooth-scroll is **Lenis** (template default); Editoria's `gsapSmoothScroll.ts` ships as an alternate but isn't currently wired.
+Studio Circa hotel project. Bootstrapped from `webflow-mcp-starter@1.0.0` and seeded with all of Editoria's animation modules. The page smooth-scroll is **GSAP ScrollSmoother** (matching Editoria). ScrollSmoother applies a `transform` to `.main-wrapper`, so every `ScrollTrigger` pin inside the page must rely on ScrollTrigger's auto-`pinType: 'transform'` — which only kicks in when `gsapSmoothScroll()` has run **before** the pin is created. `src/index.ts` calls it first inside `Webflow.push`; keep that order.
 
 ## Animations carried over from Editoria
 
 Modules in `src/utils/` carried from `~/editoria` verbatim — adapt per Mirador's design as you build:
-`accordion`, `bgAccordion`, `bookingButtonOnScoll`, `bookingModal`, `buttonAnimation`, `experiences`, `gaTagging`, `gsapBasicAnimations`, `gsapNestedLineSplit`, `gsapSmoothScroll` (not wired), `header`, `homeAlternativeHero`, `homeMain`, `linesAnimation`, `map`, `mapNeeds`, `popupModal`, `roomIndiv`, `roomsHeroAnimation`, `slidersSections`, `stickyHero`, `stickySection`, `stickyText`, `swiperSliders`, `textMask`.
+`accordion`, `bgAccordion`, `bookingButtonOnScoll`, `bookingModal`, `buttonAnimation`, `experiences`, `gaTagging`, `gsapBasicAnimations`, `gsapNestedLineSplit`, `header`, `homeAlternativeHero`, `homeMain`, `linesAnimation`, `map`, `mapNeeds`, `popupModal`, `roomIndiv`, `roomsHeroAnimation`, `slidersSections`, `stickyHero`, `stickySection`, `stickyText`, `swiperSliders`, `textMask`.
 
-Plus the template's own `modals` (accessible dialog driver) and `lenisGsap` (Lenis + ScrollTrigger wiring) — already in `src/utils/`.
+Plus the template's own `modals` (accessible dialog driver) — already in `src/utils/`.
 
 ## Notes on the build
 
@@ -133,7 +133,7 @@ editing the URL.
 src/
 ├── index.ts                 ← single entry: imports every feature and wires it into Webflow.push
 ├── utils/{name}.ts          ← one file per feature, named export
-└── types/gsap.d.ts          ← ambient CDN globals (gsap, ScrollTrigger, Lenis, SplitText, Swiper)
+└── types/gsap.d.ts          ← ambient CDN globals (gsap, ScrollTrigger, ScrollSmoother, SplitText, Swiper)
 bin/
 └── build.js                 ← esbuild: bundle: true, entry: src/index.ts, outdir: dist/
 dist/
@@ -154,7 +154,7 @@ export const featureName = () => {
   const root = document.querySelector<HTMLElement>('.selector')
   if (!root) return  // selector-presence guard — the only guard needed
 
-  // do the work; CDN globals (gsap, ScrollTrigger, Lenis, SplitText, Swiper)
+  // do the work; CDN globals (gsap, ScrollTrigger, ScrollSmoother, SplitText, Swiper)
   // are ambient and guaranteed available inside Webflow.push
 }
 ```
@@ -178,13 +178,15 @@ on `window`.
   scroll lock. For a deliberate, discrete content-size change (CMS filter,
   accordion expand), call `ScrollTrigger.refresh(true)` inline; it defers
   until momentum scroll settles.
-- **Smooth-scroll default is Lenis** (`src/utils/lenisGsap.ts`). Lenis
-  supports `position: sticky` and pairs cleanly with `ScrollTrigger.update`,
-  which makes it the safe default. If your project switches to GSAP
-  ScrollSmoother for a specific design reason, read
-  `docs/solutions/integration-issues/scrolltrigger-mobile-premature-animations.md`
-  first — the iOS lazy-image pre-init pattern documented there is required
-  under ScrollSmoother but is NOT required under Lenis.
+- **Smooth-scroll is GSAP ScrollSmoother** (`src/utils/gsapSmoothScroll.ts`),
+  wired first in `src/index.ts` to match Editoria. ScrollSmoother transforms
+  `.main-wrapper`, which breaks native CSS `position: sticky` inside the
+  page and forces ScrollTrigger pins to use `pinType: 'transform'`
+  (auto-selected as long as the smoother is alive before the pin is
+  created). For iOS lazy-image issues under ScrollSmoother, see
+  `docs/solutions/integration-issues/scrolltrigger-mobile-premature-animations.md`.
+  Modal page-scroll lock uses `smoothScroll.stop()` / `.start()`, exported
+  from `gsapSmoothScroll.ts`.
 
 **Deploy:** bump a changeset, tag, push. Live CDN URL:
 `https://cdn.jsdelivr.net/gh/Granite-Marketing/<your-repo>@vX.Y.Z/dist/index.js`.

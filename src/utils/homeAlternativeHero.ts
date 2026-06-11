@@ -1,6 +1,3 @@
-import { gsap } from 'gsap';
-import SplitType from 'split-type';
-
 export const homeAlternativeHero = () => {
   if (!document.querySelector('.section_hero-booking')) return;
 

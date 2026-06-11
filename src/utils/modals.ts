@@ -11,15 +11,15 @@
  * Open state is expressed via the `is-open` class — CSS handles visibility,
  * animation, and easing via Webflow combo classes.
  *
- * Page-scroll lock: Lenis is stopped on open and resumed on close. This halts
- * page scrolling AND releases the modal's overflow-y:auto for native
- * wheel/touch handling. No body styles or scrollTo are touched.
+ * Page-scroll lock: ScrollSmoother is paused on open and resumed on close.
+ * This halts page scrolling AND releases the modal's overflow-y:auto for
+ * native wheel/touch handling. No body styles or scrollTo are touched.
  *
  * Focus management: the script finds modals via `getElementById`, so triggers
  * and dialogs can live anywhere in the DOM.
  */
 
-import { lenis } from '$utils/lenisGsap'
+import { smoothScroll } from '$utils/gsapSmoothScroll'
 
 const FOCUSABLE_SELECTOR = [
   'a[href]',
@@ -79,9 +79,9 @@ export const modals = () => {
       overlayElement.setAttribute('aria-hidden', 'false')
     }
 
-    // Stop Lenis so page scrolling halts and the modal's own overflow-y:auto
-    // takes over for native wheel/touch handling.
-    lenis.stop()
+    // Pause ScrollSmoother so page scrolling halts and the modal's own
+    // overflow-y:auto takes over for native wheel/touch handling.
+    smoothScroll.stop()
 
     // Defer focus until the open transition has finished — focusing while the
     // modal is mid-slide can cause the browser's focus-into-view request to
@@ -130,7 +130,7 @@ export const modals = () => {
       overlayElement.setAttribute('aria-hidden', 'true')
     }
 
-    lenis.start()
+    smoothScroll.start()
 
     trigger?.focus({ preventScroll: true })
 

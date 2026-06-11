@@ -1,6 +1,5 @@
-import Swiper from 'swiper';
-import { Autoplay, Pagination } from 'swiper/modules';
-
+// Swiper is a CDN-loaded ambient global. Autoplay + Pagination are bundled
+// in the CDN distribution so no `modules:` config is needed.
 export const slidersSections = () => {
   const sections = document.querySelectorAll('.section_sliders');
 
@@ -14,7 +13,6 @@ export const slidersSections = () => {
       console.log(slider);
       const pagination = block.querySelector('.swiper-pagination-bullets');
       const newSwiper = new Swiper(slider, {
-        modules: [Autoplay, Pagination],
         loop: true,
         autoplay: true,
         grabCursor: true,
