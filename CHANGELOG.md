@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+### Patch Changes
+
+- fix booking form
+
 ## 0.1.1
 
 ### Patch Changes
