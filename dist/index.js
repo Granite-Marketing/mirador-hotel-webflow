@@ -1202,11 +1202,9 @@
   var DEFAULT_BG = "#3a3e24";
   var LIGHT_TEXT = "#e7e5d9";
   var sortAndPaintSliderItems = (section) => {
-    const collection = section.querySelector(".sliders_collection");
+    const collection = section.querySelector(".sliders_collection.is-experiences");
     if (!collection) return;
-    const items = Array.from(
-      collection.querySelectorAll(":scope > .sliders_item")
-    );
+    const items = Array.from(collection.querySelectorAll(":scope > .sliders_item"));
     if (items.length === 0) return;
     items.slice().sort((a, b) => {
       const av = a.getAttribute("data-custom-sort") ?? "";
@@ -1214,9 +1212,7 @@
       return av.localeCompare(bv);
     }).forEach((item) => collection.appendChild(item));
     let coloured = false;
-    Array.from(
-      collection.querySelectorAll(":scope > .sliders_item")
-    ).forEach((item) => {
+    Array.from(collection.querySelectorAll(":scope > .sliders_item")).forEach((item) => {
       if (coloured) {
         const color = item.querySelector(".background-colour-selector")?.getAttribute("data-color") || DEFAULT_BG;
         item.style.backgroundColor = color;

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.4
+
+### Patch Changes
+
+- Scope the sliders sort/paint pass to `.sliders_collection.is-experiences` so it no longer applies to every sliders collection on the site — previously it grouped and alternated backgrounds on any `.sliders_collection` it found.
+
 ## 0.1.3
 
 ### Patch Changes
