@@ -463,9 +463,12 @@
   // src/utils/homeAlternativeHero.ts
   var homeAlternativeHero = () => {
     if (!document.querySelector(".section_hero-booking")) return;
-    const splitTexTitle = new SplitType(".hero_title2", {
-      types: "words,chars"
-    });
+    const splitTexTitle = new SplitType(
+      document.querySelector(".hero_title2") || document.querySelector(".section_hero h1"),
+      {
+        types: "words,chars"
+      }
+    );
     const ems = document.querySelectorAll(".hero_title2 em");
     gsap.set(ems, {
       display: "unset"
@@ -475,10 +478,12 @@
       opacity: 0
     });
     splitTexTitle.words?.forEach((word) => {
+      ;
       word.style.display = "inline-block";
       word.style.whiteSpace = "normal";
     });
     splitTexTitle.lines?.forEach((line) => {
+      ;
       line.style.display = "inline-block";
     });
     const tl = gsap.timeline({
@@ -509,9 +514,12 @@
   // src/utils/homeMain.ts
   var homeMain = () => {
     if (!document.querySelector(".section_hero")) return;
-    const splitText = new SplitType(".hero_title2", {
-      types: "words,chars"
-    });
+    const splitText = new SplitType(
+      document.querySelector(".hero_title2") || document.querySelector(".section_hero h1"),
+      {
+        types: "words,chars"
+      }
+    );
     const heroFigure1 = document.querySelector(".hero_figure-1");
     const heroFigure2 = document.querySelector(".hero_figure-2");
     const ems = document.querySelectorAll(".hero_title2 em");
@@ -523,10 +531,12 @@
       opacity: 0
     });
     splitText.words?.forEach((word) => {
+      ;
       word.style.display = "inline-block";
       word.style.whiteSpace = "normal";
     });
     splitText.lines?.forEach((line) => {
+      ;
       line.style.display = "inline-block";
     });
     gsap.set(heroFigure1, {
@@ -654,8 +664,8 @@
     let mapZoom = mapEl.getAttribute("map-zoom");
     if (!mapZoom) mapZoom = "17";
     mapZoom = Number(mapZoom);
-    const { Map } = await google.maps.importLibrary("maps");
-    map = new Map(mapEl, {
+    const { Map: Map2 } = await google.maps.importLibrary("maps");
+    map = new Map2(mapEl, {
       zoom: mapZoom,
       center: centerPosition,
       mapId: "DEMO_MAP_ID"
@@ -1079,10 +1089,97 @@
     tl.fromTo(heroModalButton, { opacity: 0 }, { duration: 0.75, ease: "power2.inOut", opacity: 1 }, "<+=0.05");
   };
 
+  // src/utils/sectionLinks.ts
+  var sectionLinks = () => {
+    const links = document.querySelectorAll(".section-links_link");
+    if (links.length === 0) return;
+    links.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        const slug = link.getAttribute("href");
+        if (!slug) return;
+        const target = document.querySelector(
+          `.sliders_item[data-custom-sort="${slug}"]`
+        );
+        if (!target) return;
+        event.preventDefault();
+        const smoother = ScrollSmoother.get();
+        if (smoother) {
+          smoother.scrollTo(target, true);
+        } else {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+  };
+
+  // src/utils/sectionLinksActive.ts
+  var sectionLinksActive = () => {
+    const buttons = Array.from(
+      document.querySelectorAll(".section-links_link")
+    );
+    const items = Array.from(
+      document.querySelectorAll(".sliders_item[data-custom-sort]")
+    );
+    if (buttons.length === 0 || items.length === 0) return;
+    const buttonsBySlug = /* @__PURE__ */ new Map();
+    buttons.forEach((button) => {
+      const slug = button.getAttribute("href");
+      if (!slug) return;
+      const bucket = buttonsBySlug.get(slug) ?? [];
+      bucket.push(button);
+      buttonsBySlug.set(slug, bucket);
+    });
+    const activeCount = /* @__PURE__ */ new Map();
+    const setActive = (slug, active) => {
+      const targets = buttonsBySlug.get(slug);
+      if (!targets) return;
+      targets.forEach((button) => button.classList.toggle("is-active", active));
+      if (active && targets[0]) followInStrip(targets[0]);
+    };
+    items.forEach((item) => {
+      const slug = item.getAttribute("data-custom-sort");
+      if (!slug || !buttonsBySlug.has(slug)) return;
+      ScrollTrigger.create({
+        trigger: item,
+        start: "top center",
+        end: "bottom center",
+        onToggle: (self) => {
+          const next = (activeCount.get(slug) ?? 0) + (self.isActive ? 1 : -1);
+          activeCount.set(slug, next);
+          if (self.isActive && next === 1) setActive(slug, true);
+          if (!self.isActive && next === 0) setActive(slug, false);
+        }
+      });
+    });
+  };
+  var followInStrip = (button) => {
+    const strip = findHorizontalScroller(button);
+    if (!strip) return;
+    const buttonRect = button.getBoundingClientRect();
+    const stripRect = strip.getBoundingClientRect();
+    const offsetWithin = buttonRect.left - stripRect.left + strip.scrollLeft;
+    const target = offsetWithin - (strip.clientWidth - button.clientWidth) / 2;
+    const max = strip.scrollWidth - strip.clientWidth;
+    const clamped = Math.max(0, Math.min(target, max));
+    strip.scrollTo({ left: clamped, behavior: "smooth" });
+  };
+  var findHorizontalScroller = (from) => {
+    let node = from.parentElement;
+    while (node && node !== document.body) {
+      if (node.scrollWidth > node.clientWidth) {
+        const overflowX = getComputedStyle(node).overflowX;
+        if (overflowX === "auto" || overflowX === "scroll") return node;
+      }
+      node = node.parentElement;
+    }
+    return null;
+  };
+
   // src/utils/slidersSections.ts
   var slidersSections = () => {
     const sections = document.querySelectorAll(".section_sliders");
     sections.forEach((section) => {
+      sortAndPaintSliderItems(section);
       const blocks = section.querySelectorAll(".sliders_item");
       blocks.forEach((block) => {
         const slider = block.querySelector(".swiper");
@@ -1100,6 +1197,35 @@
         });
         console.log(newSwiper);
       });
+    });
+  };
+  var DEFAULT_BG = "#3a3e24";
+  var LIGHT_TEXT = "#e7e5d9";
+  var sortAndPaintSliderItems = (section) => {
+    const collection = section.querySelector(".sliders_collection");
+    if (!collection) return;
+    const items = Array.from(
+      collection.querySelectorAll(":scope > .sliders_item")
+    );
+    if (items.length === 0) return;
+    items.slice().sort((a, b) => {
+      const av = a.getAttribute("data-custom-sort") ?? "";
+      const bv = b.getAttribute("data-custom-sort") ?? "";
+      return av.localeCompare(bv);
+    }).forEach((item) => collection.appendChild(item));
+    let coloured = false;
+    Array.from(
+      collection.querySelectorAll(":scope > .sliders_item")
+    ).forEach((item) => {
+      if (coloured) {
+        const color = item.querySelector(".background-colour-selector")?.getAttribute("data-color") || DEFAULT_BG;
+        item.style.backgroundColor = color;
+        item.style.color = LIGHT_TEXT;
+      } else {
+        item.style.backgroundColor = "transparent";
+        item.style.color = "";
+      }
+      coloured = !coloured;
     });
   };
 
@@ -1386,6 +1512,8 @@
       bookingModal();
       roomIndiv();
       slidersSections();
+      sectionLinks();
+      sectionLinksActive();
       bgAccordion();
       stickySection();
       buttonAnimation();

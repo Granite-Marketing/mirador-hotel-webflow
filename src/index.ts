@@ -34,6 +34,8 @@ import { modals } from '$utils/modals'
 import { popupModal } from '$utils/popupModal'
 import { roomIndiv } from '$utils/roomIndiv'
 import { roomsHeroAnimation } from '$utils/roomsHeroAnimation'
+import { sectionLinks } from '$utils/sectionLinks'
+import { sectionLinksActive } from '$utils/sectionLinksActive'
 import { slidersSections } from '$utils/slidersSections'
 import { stickyHero } from '$utils/stickyHero'
 import { stickySection } from '$utils/stickySection'
@@ -59,6 +61,8 @@ window.Webflow.push(() => {
     bookingModal()
     roomIndiv()
     slidersSections()
+    sectionLinks()
+    sectionLinksActive()
     bgAccordion()
     stickySection()
     buttonAnimation()

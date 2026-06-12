@@ -3,41 +3,45 @@
 // gsap.registerPlugin(SplitType);
 
 export const homeMain = () => {
-  if (!document.querySelector('.section_hero')) return;
+  if (!document.querySelector('.section_hero')) return
 
-  const splitText = new SplitType('.hero_title2', {
-    types: 'words,chars',
-  });
+  const splitText = new SplitType(
+    (document.querySelector('.hero_title2') ||
+      document.querySelector('.section_hero h1')) as HTMLElement,
+    {
+      types: 'words,chars',
+    },
+  )
 
-  const heroFigure1 = document.querySelector('.hero_figure-1');
-  const heroFigure2 = document.querySelector('.hero_figure-2');
-  const ems = document.querySelectorAll('.hero_title2 em');
+  const heroFigure1 = document.querySelector('.hero_figure-1')
+  const heroFigure2 = document.querySelector('.hero_figure-2')
+  const ems = document.querySelectorAll('.hero_title2 em')
   gsap.set(ems, {
     display: 'unset',
-  });
+  })
   gsap.set(splitText.chars, {
     yPercent: 100,
     opacity: 0,
-  });
+  })
 
   splitText.words?.forEach((word) => {
-    (word as HTMLElement).style.display = 'inline-block';
-    (word as HTMLElement).style.whiteSpace = 'normal';
-  });
+    ;(word as HTMLElement).style.display = 'inline-block'
+    ;(word as HTMLElement).style.whiteSpace = 'normal'
+  })
 
   splitText.lines?.forEach((line) => {
-    (line as HTMLElement).style.display = 'inline-block';
+    ;(line as HTMLElement).style.display = 'inline-block'
     // (line as HTMLElement).style.whiteSpace = 'nowrap';
-  });
+  })
   gsap.set(heroFigure1, {
     overflow: 'hidden',
-  });
+  })
   const tl = gsap.timeline({
     defaults: {
       ease: (i) => 1 - Math.pow(1 - i, 4),
       duration: 1,
     },
-  });
+  })
   tl.fromTo(
     heroFigure1!.querySelector('img'),
     {
@@ -45,7 +49,7 @@ export const homeMain = () => {
     },
     {
       scale: 1,
-    }
+    },
   )
     .fromTo(
       heroFigure2,
@@ -55,7 +59,7 @@ export const homeMain = () => {
       {
         clipPath: 'inset(0% 0% 0% 0%)',
       },
-      '-=.5'
+      '-=.5',
     )
     .to(
       splitText.chars,
@@ -65,6 +69,6 @@ export const homeMain = () => {
         stagger: 0.025,
         opacity: 1,
       },
-      '-=.5'
-    );
-};
+      '-=.5',
+    )
+}
