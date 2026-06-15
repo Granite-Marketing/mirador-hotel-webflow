@@ -1,6 +1,6 @@
 {
   "name": "@granite-marketing/mirador-hotel-webflow",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Mirador Hotel — Webflow build for Studio Circa. Bootstrapped from webflow-mcp-starter; animations lifted from editoria.",
   "type": "module",
   "main": "src/index.ts",

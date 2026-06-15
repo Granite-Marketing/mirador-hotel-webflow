@@ -221,26 +221,33 @@
       });
     });
   };
+  var HERO_HOLD_MS = 700;
   var handleIncoming = () => {
     const slug = window.location.hash.slice(1);
     if (!slug) return;
-    const target = document.querySelector(
-      `.sliders_item[data-custom-sort="${slug}"]`
-    );
-    if (!target) return;
     history.replaceState(
       null,
       "",
       window.location.pathname + window.location.search
     );
-    requestAnimationFrame(() => {
-      const smoother = ScrollSmoother.get();
-      if (smoother) {
-        smoother.scrollTo(target, true);
+    const target = document.querySelector(
+      `.sliders_item[data-custom-sort="${slug}"]`
+    );
+    if (!target) return;
+    const smoother = ScrollSmoother.get();
+    if (smoother) {
+      smoother.scrollTo(0, false);
+    } else {
+      window.scrollTo(0, 0);
+    }
+    window.setTimeout(() => {
+      const live = ScrollSmoother.get();
+      if (live) {
+        live.scrollTo(target, true);
       } else {
         target.scrollIntoView({ behavior: "smooth", block: "start" });
       }
-    });
+    }, HERO_HOLD_MS);
   };
 
   // src/utils/experiences.ts

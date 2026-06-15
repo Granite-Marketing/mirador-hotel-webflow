@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.6
+
+### Patch Changes
+
+- Cross-page scroll now animates smoothly. On arrival, snap back to the top first (to undo any native browser hash-jump), hold on the hero for 700 ms, then animate down to the target via ScrollSmoother. Previously the scroll appeared instant because the browser had already jumped near the target before our handler ran.
+
 ## 0.1.5
 
 ### Patch Changes

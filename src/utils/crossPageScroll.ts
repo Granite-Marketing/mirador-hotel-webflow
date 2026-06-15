@@ -46,30 +46,47 @@ const hookOutgoing = (): void => {
   });
 };
 
+/**
+ * Hold on the destination page's hero before animating down. The browser
+ * may have already done a native hash-jump on initial load (the page
+ * arrived already scrolled toward the target) — we snap back to the top
+ * first so the user sees the hero, then animate from there.
+ */
+const HERO_HOLD_MS = 700;
+
 const handleIncoming = (): void => {
   const slug = window.location.hash.slice(1);
   if (!slug) return;
 
-  const target = document.querySelector<HTMLElement>(
-    `.sliders_item[data-custom-sort="${slug}"]`
-  );
-  if (!target) return;
-
-  // Clean the hash first so a refresh / back-nav doesn't re-trigger.
+  // Clean the hash immediately so a refresh / back-nav doesn't re-trigger
+  // and so any later anchor-jump heuristic can't act on it.
   history.replaceState(
     null,
     '',
     window.location.pathname + window.location.search
   );
 
-  // Defer one frame so layout, font swap, and ScrollTrigger measurements
-  // settle before we ask the smoother to scroll.
-  requestAnimationFrame(() => {
-    const smoother = ScrollSmoother.get();
-    if (smoother) {
-      smoother.scrollTo(target, true);
+  const target = document.querySelector<HTMLElement>(
+    `.sliders_item[data-custom-sort="${slug}"]`
+  );
+  if (!target) return;
+
+  // Snap to the top instantly — undoes any native hash-jump the browser
+  // performed before our handler ran, so the hero is visible.
+  const smoother = ScrollSmoother.get();
+  if (smoother) {
+    smoother.scrollTo(0, false);
+  } else {
+    window.scrollTo(0, 0);
+  }
+
+  // Hold on the hero, then animate smoothly down to the target.
+  window.setTimeout(() => {
+    const live = ScrollSmoother.get();
+    if (live) {
+      live.scrollTo(target, true);
     } else {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  });
+  }, HERO_HOLD_MS);
 };
