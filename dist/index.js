@@ -200,6 +200,49 @@
     });
   };
 
+  // src/utils/crossPageScroll.ts
+  var crossPageScroll = () => {
+    hookOutgoing();
+    handleIncoming();
+  };
+  var hookOutgoing = () => {
+    const links = document.querySelectorAll(
+      "a[scroll-target][href]"
+    );
+    links.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0)
+          return;
+        const href = link.getAttribute("href");
+        const slug = link.getAttribute("scroll-target");
+        if (!href || !slug) return;
+        event.preventDefault();
+        window.location.href = `${href}#${slug}`;
+      });
+    });
+  };
+  var handleIncoming = () => {
+    const slug = window.location.hash.slice(1);
+    if (!slug) return;
+    const target = document.querySelector(
+      `.sliders_item[data-custom-sort="${slug}"]`
+    );
+    if (!target) return;
+    history.replaceState(
+      null,
+      "",
+      window.location.pathname + window.location.search
+    );
+    requestAnimationFrame(() => {
+      const smoother = ScrollSmoother.get();
+      if (smoother) {
+        smoother.scrollTo(target, true);
+      } else {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  };
+
   // src/utils/experiences.ts
   var isMobile = window.matchMedia("(max-width: 767px)");
   var swiperArr = [];
@@ -1510,6 +1553,7 @@
       slidersSections();
       sectionLinks();
       sectionLinksActive();
+      crossPageScroll();
       bgAccordion();
       stickySection();
       buttonAnimation();

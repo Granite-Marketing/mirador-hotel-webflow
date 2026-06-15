@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.5
+
+### Patch Changes
+
+- Add cross-page scroll-to-section support. Links carrying both an `href` (destination page) and a `scroll-target` attribute (a `data-custom-sort` slug) navigate to the target page and smooth-scroll to the matching `.sliders_item` on arrival via ScrollSmoother. Mirrors the same-page contract used by `sectionLinks`.
+
 ## 0.1.4
 
 ### Patch Changes

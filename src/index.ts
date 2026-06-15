@@ -20,6 +20,7 @@ import { bgAccordion } from '$utils/bgAccordion'
 import { bookingButtonOnScroll } from '$utils/bookingButtonOnScoll'
 import { bookingModal } from '$utils/bookingModal'
 import { buttonAnimation } from '$utils/buttonAnimation'
+import { crossPageScroll } from '$utils/crossPageScroll'
 import { experiences } from '$utils/experiences'
 import { gaTagging } from '$utils/gaTagging'
 import { gsapBasicAnimations } from '$utils/gsapBasicAnimations'
@@ -63,6 +64,7 @@ window.Webflow.push(() => {
     slidersSections()
     sectionLinks()
     sectionLinksActive()
+    crossPageScroll()
     bgAccordion()
     stickySection()
     buttonAnimation()
