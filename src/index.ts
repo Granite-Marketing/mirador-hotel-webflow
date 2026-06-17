@@ -22,6 +22,7 @@ import { bookingModal } from '$utils/bookingModal'
 import { buttonAnimation } from '$utils/buttonAnimation'
 import { crossPageScroll } from '$utils/crossPageScroll'
 import { experiences } from '$utils/experiences'
+import { faqCategoryGroup } from '$utils/faqCategoryGroup'
 import { gaTagging } from '$utils/gaTagging'
 import { gsapBasicAnimations } from '$utils/gsapBasicAnimations'
 import { gsapSmoothScroll } from '$utils/gsapSmoothScroll'
@@ -66,6 +67,7 @@ window.Webflow.push(() => {
     sectionLinksActive()
     crossPageScroll()
     bgAccordion()
+    faqCategoryGroup()
     stickySection()
     buttonAnimation()
     roomsHeroAnimation()
