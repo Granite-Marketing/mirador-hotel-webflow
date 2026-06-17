@@ -5,6 +5,7 @@
   --border-color: #fff;
   --accent-color: var(--base-color-brand--brand-accent);
   --title-font-family: sweet-gothic, sans-serif;
+  --body-font-family: Cosmicamono, sans-serif;
 }
 
 form {
@@ -49,7 +50,7 @@ form {
   border: none;
   border-bottom: 1px solid var(--border-color);
   color: var(--text-color);
-  font-family: var(--title-font-family) !important;
+  font-family: var(--body-font-family) !important;
   font-weight: 700;
   font-size: 1rem;
   flex-grow: 1;
@@ -62,7 +63,7 @@ form {
 
 .booking-form .date-input::placeholder {
   text-transform: uppercase;
-  font-family: var(--title-font-family) !important;
+  font-family: var(--body-font-family) !important;
   font-weight: 700;
   text-align: left !important;
 }
@@ -80,7 +81,7 @@ form {
   width: 2.5rem;
   height: 100%;
   cursor: pointer;
-  font-family: var(--title-font-family) !important;
+  font-family: var(--body-font-family) !important;
   font-weight: 700;
 }
 
@@ -104,7 +105,7 @@ form {
   background-repeat: no-repeat;
   background-position: right 0.5rem center;
   padding-right: 1.5rem !important;
-  font-family: var(--title-font-family);
+  font-family: var(--body-font-family);
 }
 
 .booking-form .date-input {
