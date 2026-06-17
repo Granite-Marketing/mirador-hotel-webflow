@@ -1,92 +1,96 @@
 // Swiper is a CDN-loaded ambient global (see src/types/gsap.d.ts). The CDN
 // bundle ships Autoplay + Pagination already registered.
-const isMobile = window.matchMedia('(max-width: 767px)');
-const swiperArr = [];
-const experienceItems = document.querySelectorAll('.experiences_item-gallery');
+const isMobile = window.matchMedia('(max-width: 767px)')
+const swiperArr = []
+const experienceItems = document.querySelectorAll('.experiences_item-gallery')
 
 export const experiences = () => {
   if (isMobile.matches) {
-    console.log('init swiper');
-    experienceSwiper();
+    console.log('init swiper')
+    experienceSwiper()
   } else {
-    defaultHighlights();
+    defaultHighlights()
   }
 
   experienceItems?.forEach((subcollection) => {
     subcollection.addEventListener('mouseover', (event) => {
-      if (isMobile.matches) return;
-      const label = event.target?.closest('.experiences_subcontent');
-      if (!label) return;
-      updateCollectionHighlights(subcollection, label);
-    });
-  });
+      if (isMobile.matches) return
+      const label = event.target?.closest('.experiences_subcontent')
+      if (!label) return
+      updateCollectionHighlights(subcollection, label)
+    })
+  })
 
   isMobile.addEventListener('change', function () {
-    console.log('change');
+    console.log('change')
     if (isMobile.matches) {
-      experienceSwiper();
+      experienceSwiper()
     } else {
-      defaultHighlights();
+      defaultHighlights()
       swiperArr.forEach((swiper) => {
-        swiper.destroy();
-        console.log('swiper destroyed');
-      });
+        swiper.destroy()
+        console.log('swiper destroyed')
+      })
     }
-  });
-};
+  })
+}
 
 const updateCollectionHighlights = (collection, label) => {
-  const items = collection.querySelectorAll('.experiences_subitem');
+  const items = collection.querySelectorAll('.experiences_subitem')
   items?.forEach((item) => {
-    const itemLabel = item.querySelector('.experiences_subcontent');
-    highlightExperience(item, label == itemLabel);
-  });
-};
+    const itemLabel = item.querySelector('.experiences_subcontent')
+    highlightExperience(item, label == itemLabel)
+  })
+}
 
 const highlightExperience = (item, highlight = true) => {
-  const label = item.querySelector('.experiences_subcontent');
-  const figure = item.querySelector('.experiences_subfigure');
-  const content = item.querySelector('.experiences_item-content');
-  const mainHeading = item.querySelector('.experiences_item-header.is-desk');
+  const label = item.querySelector('.experiences_subcontent')
+  const figure = item.querySelector('.experiences_subfigure')
+  const content = item.querySelector('.experiences_item-content')
+  const wrapper = item.querySelector('.experiences_subitem-aside')
+  const mainHeading = item.querySelector('.experiences_item-header.is-desk')
   if (highlight) {
-    figure.style.opacity = 1;
-    label.classList.add('is-active');
+    figure.style.opacity = 1
+    label.classList.add('is-active')
 
-    content.style.opacity = 1;
-    content.style.pointerEvents = 'auto';
+    content.style.opacity = 1
+    content.style.pointerEvents = 'auto'
 
-    mainHeading.style.opacity = 1;
-    mainHeading.style.pointerEvents = 'auto';
+    mainHeading.style.opacity = 1
+    mainHeading.style.pointerEvents = 'auto'
+
+    wrapper.style.pointerEvents = 'auto'
   } else {
-    figure.style.opacity = 0;
-    label.classList.remove('is-active');
-    content.style = {};
+    figure.style.opacity = 0
+    label.classList.remove('is-active')
+    content.style = {}
+    wrapper.style.pointerEvents = 'none'
 
-    mainHeading.style.opacity = 0;
-    mainHeading.style.pointerEvents = 'none';
+    mainHeading.style.opacity = 0
+    mainHeading.style.pointerEvents = 'none'
   }
-};
+}
 
 const defaultHighlights = () => {
   experienceItems?.forEach((subcollection) => {
-    const defaultLabel = subcollection.querySelector('.experiences_subcontent');
-    updateCollectionHighlights(subcollection, defaultLabel);
-  });
-};
+    const defaultLabel = subcollection.querySelector('.experiences_subcontent')
+    updateCollectionHighlights(subcollection, defaultLabel)
+  })
+}
 
 const experienceSwiper = () => {
-  const sliders = document.querySelectorAll('.experiences_subcollection-wrap.swiper');
-  if (!sliders) return;
+  const sliders = document.querySelectorAll('.experiences_subcollection-wrap.swiper')
+  if (!sliders) return
 
   sliders.forEach((slider) => {
-    const sliderItems = slider.querySelectorAll('.experiences_subitem');
+    const sliderItems = slider.querySelectorAll('.experiences_subitem')
     const pagination = slider
       .closest('.experiences_item-gallery')
-      ?.querySelector('.experiences_subcollection-pagination');
+      ?.querySelector('.experiences_subcollection-pagination')
 
     sliderItems.forEach((item) => {
-      highlightExperience(item, true);
-    });
+      highlightExperience(item, true)
+    })
 
     const swiper = new Swiper(slider, {
       loop: true,
@@ -96,8 +100,8 @@ const experienceSwiper = () => {
         el: pagination,
       },
       slidesPerView: 1,
-    });
-    console.log('swiper created');
-    swiperArr.push(swiper);
-  });
-};
+    })
+    console.log('swiper created')
+    swiperArr.push(swiper)
+  })
+}
