@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.8
+
+### Patch Changes
+
+- Update booking engine CSS filter families and form fonts
+
 ## 0.1.7
 
 ### Patch Changes
