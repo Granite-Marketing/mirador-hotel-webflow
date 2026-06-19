@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.9
+
+### Patch Changes
+
+- Polish the FAQ accordion behaviour:
+
+  - Smooth the first accordion transition by syncing the initially-active item's sizer on init (gated on `document.fonts.ready` so the initial measurement uses final font metrics). Previously the first click animated from `height: auto` and snapped instead of transitioning.
+  - Prevent cross-group layout shift. Wrap each category's rows in a `bg-accordion_group-wrapper` and apply a `min-height` equal to the group's collapsed height plus its tallest paragraph. The browser enforces the reservation every frame, so opening or closing an item in one group no longer drifts the labels of the other.
+  - Make the FAQ category margin-top responsive via `clamp()` instead of a fixed `rem` value, so the inter-group gap scales sensibly across viewports.
+
 ## 0.1.8
 
 ### Patch Changes

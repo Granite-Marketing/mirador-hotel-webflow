@@ -19,7 +19,12 @@ export const faqCategoryGroup = () => {
 
     if (i > 0) {
       const margin = item.getAttribute('data-margin-top')
-      if (margin) item.style.marginTop = `${margin}rem`
+      if (margin) {
+        const max = parseFloat(margin)
+        const min = max * 0.35
+        const vw = (max / 1440) * 100
+        item.style.marginTop = `clamp(${min}rem, ${vw.toFixed(2)}vw, ${max}rem)`
+      }
     }
   })
 

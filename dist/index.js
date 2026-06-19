@@ -30,37 +30,79 @@
   var bgAccordion = () => {
     const section = document.querySelector(".section_bg-accordion");
     if (!section) return;
-    const sizers = section.querySelectorAll(".bg-accordion_item-sizer");
-    const config = {
+    const radios = Array.from(
+      section.querySelectorAll(".bg-accordion_item-radio-field")
+    );
+    const groupsByCategory = /* @__PURE__ */ new Map();
+    const groupOrder = [];
+    const radioToGroup = /* @__PURE__ */ new Map();
+    radios.forEach((radio) => {
+      const row = radio.closest(".bg-accordion_names-item-wrapper");
+      if (!row) return;
+      const heading = row.querySelector(".heading-style-h3.u-smaller");
+      const category = heading?.textContent?.trim() ?? "";
+      const paragraph = row.querySelector(".bg-accordion_item-paragraph");
+      const sizer = row.querySelector(".bg-accordion_item-sizer");
+      if (!paragraph || !sizer) return;
+      let group = groupsByCategory.get(category);
+      if (!group) {
+        group = { category, rows: [], paragraphs: [], sizers: [], maxHeight: 0 };
+        groupsByCategory.set(category, group);
+        groupOrder.push(group);
+      }
+      group.rows.push(row);
+      group.paragraphs.push(paragraph);
+      group.sizers.push(sizer);
+      radioToGroup.set(radio, group);
+    });
+    const syncGroup = (group) => {
+      group.sizers.forEach((s) => {
+        s.style.height = "0px";
+      });
+      for (let i = 0; i < group.rows.length; i++) {
+        const radio = group.rows[i].querySelector(".bg-accordion_item-radio-field");
+        if (!radio?.classList.contains("fs-cmsfilter_active")) continue;
+        const h = group.paragraphs[i].getBoundingClientRect().height;
+        group.sizers[i].style.height = h + "px";
+        break;
+      }
+    };
+    document.fonts.ready.then(() => {
+      groupOrder.forEach((group) => {
+        const firstRow = group.rows[0];
+        const parent = firstRow.parentElement;
+        if (!parent) return;
+        const wrapper = document.createElement("div");
+        wrapper.className = "bg-accordion_group-wrapper";
+        parent.insertBefore(wrapper, firstRow);
+        group.rows.forEach((row) => wrapper.appendChild(row));
+        group.maxHeight = group.paragraphs.reduce(
+          (max, p) => Math.max(max, p.getBoundingClientRect().height),
+          0
+        );
+        group.sizers.forEach((s) => {
+          s.style.height = "0px";
+        });
+        const collapsedHeight = wrapper.getBoundingClientRect().height;
+        wrapper.style.minHeight = collapsedHeight + group.maxHeight + "px";
+        syncGroup(group);
+      });
+    });
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.type !== "attributes" || m.attributeName !== "class") continue;
+        const target = m.target;
+        if (!target.classList.contains("bg-accordion_item-radio-field")) continue;
+        const group = radioToGroup.get(target);
+        if (!group) continue;
+        syncGroup(group);
+      }
+    });
+    observer.observe(section, {
       attributes: true,
       subtree: true,
       attributeFilter: ["class"]
-    };
-    const callback = function(mutationsList, observer2) {
-      for (const mutation of mutationsList) {
-        if (mutation.type === "attributes" && mutation.attributeName === "class") {
-          const target = mutation.target;
-          if (!target.classList.contains("bg-accordion_item-radio-field")) return;
-          sizers.forEach((s) => {
-            s.style.height = "0px";
-          });
-          let active = section.querySelector(".bg-accordion_item-radio-field.fs-cmsfilter_active");
-          if (active) {
-            console.log(active);
-            const parent = active.parentElement;
-            if (!parent) return;
-            const paragraph = parent.querySelector(".bg-accordion_item-paragraph");
-            if (!paragraph) return;
-            const height = paragraph.getBoundingClientRect().height;
-            const sizer = parent.querySelector(".bg-accordion_item-sizer");
-            if (!sizer) return;
-            sizer.style.height = String(height) + "px";
-          }
-        }
-      }
-    };
-    const observer = new MutationObserver(callback);
-    observer.observe(section, config);
+    });
   };
 
   // src/utils/bookingButtonOnScoll.ts
@@ -358,7 +400,12 @@
       lastCategory = category;
       if (i > 0) {
         const margin = item.getAttribute("data-margin-top");
-        if (margin) item.style.marginTop = `${margin}rem`;
+        if (margin) {
+          const max = parseFloat(margin);
+          const min = max * 0.35;
+          const vw = max / 1440 * 100;
+          item.style.marginTop = `clamp(${min}rem, ${vw.toFixed(2)}vw, ${max}rem)`;
+        }
       }
     });
   };
